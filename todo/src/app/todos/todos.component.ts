@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+
 import { Todo, TodoList } from '../todo';
 import { TODOLISTS } from '../mock-todos';
 import { TodosService } from '../todos.service';
@@ -18,7 +20,8 @@ export class TodosComponent implements OnInit {
   }
 
   getTodoLists(): void {
+    console.log("getting the todolists");
     this.todosService.getTodoLists()
-      .subscribe(todolists => this.todolists = todolists);
+      .subscribe(todolists => {this.todolists = todolists; console.log(todolists);});
   }
 }

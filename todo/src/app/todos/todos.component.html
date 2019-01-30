@@ -1,10 +1,14 @@
 <div class="todos">
-	<p>Hoi</p>
-	<div class="todolist" *ngFor="let todolist of todolists">
-      <h1>Hello</h1>
-      <ul>
-        <!--<li *ngFor="let todo for todolist.todos">
-        </li>-->
-      </ul>
-	</div>
+  <mat-grid-list cols="3">
+    <mat-grid-tile  *ngFor="let todolist of todolists">
+      <mat-card class="todolist">
+        <mat-card-title>{{ todolist.title }}</mat-card-title>
+        <mat-list>
+          <mat-list-item *ngFor="let todo of todolist.todos">
+            {{ todo.text }}
+          </mat-list-item>
+        </mat-list>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
 </div>
