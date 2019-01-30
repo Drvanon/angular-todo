@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
-  title = 'todo';
+  brand = 'Todo';
 }
