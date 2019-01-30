@@ -60,6 +60,11 @@ export const TODOLISTS: TodoList[] = [
                 id: 10,
                 finished: false,
                 text: 'Tell my wife I love her'
+            },
+            {
+                id: 11,
+                finished: true,
+                text: 'Show off'
             }
         ]
     }

@@ -1,13 +1,29 @@
+<div class="row">
+  <div class="s12 m3">
+    <input mat-input/>
+    <button (click)="addTodoList('test')" mat-icon-button>
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</div>
 <div class="todos">
-  <mat-grid-list cols="3">
+  <mat-grid-list gutterSize="3em" cols="3">
     <mat-grid-tile  *ngFor="let todolist of todolists">
       <mat-card class="todolist">
-        <mat-card-title>{{ todolist.title }}</mat-card-title>
-        <mat-list>
-          <mat-list-item *ngFor="let todo of todolist.todos">
-            {{ todo.text }}
-          </mat-list-item>
-        </mat-list>
+        <mat-card-header color="accent" fxLayout="row" fxLayoutAlign="space-between">
+          <mat-card-title>{{ todolist.title }}</mat-card-title>
+          <button (click)="removeTodoList(todolist)" mat-icon-button>
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-card-header>
+        <mat-divider></mat-divider>
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item *ngFor="let todo of todolist.todos">
+              {{ todo.text }}
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
       </mat-card>
     </mat-grid-tile>
   </mat-grid-list>

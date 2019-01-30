@@ -13,4 +13,12 @@ export class TodosService {
   getTodoLists(): Observable<TodoList[]> {
     return of(TODOLISTS);
   }
+
+  removeTodoList(todolist: TodoList) {
+    // TODO: delete to server
+ }
+
+  addTodoList(title: string): void {
+    // TODO: post to server
+  }
 }
