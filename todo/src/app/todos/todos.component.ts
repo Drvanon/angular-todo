@@ -11,6 +11,7 @@ import { TodosService } from '../todos.service';
 })
 export class TodosComponent implements OnInit {
   todolists: TodoList[];
+  newTodoListTitle: string;
 
   constructor(private todosService: TodosService) { }
 
@@ -28,11 +29,11 @@ export class TodosComponent implements OnInit {
     this.todosService.removeTodoList(todolist);
   }
 
-  addTodoList(title: string): void {
-    this.todosService.addTodoList(title);
+  addTodoList(): void {
+    this.todosService.addTodoList(this.newTodoListTitle);
     // TODO: replace this when we have a server up
     // this.todosService.getTodoLists()
     //   .subscribe(todolists => this.todolists = todolists);
-    this.todolists.push({ title: title, todos: [] } as TodoList);
+    this.todolists.push({ title: this.newTodoListTitle, todos: [] } as TodoList);
   }
 }
