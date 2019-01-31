@@ -19,8 +19,11 @@
         <mat-divider></mat-divider>
         <mat-card-content>
           <mat-list>
-            <mat-list-item *ngFor="let todo of todolist.todos">
-              {{ todo.text }}
+            <mat-list-item *ngFor="let todo of todolist.todos" fxLayout="row" fxLayoutAlign="space-between">
+              <input class="todo" [(ngModel)]="todo.text"/>
+              <button (click)="removeTodo(todolist, todo)" mat-icon-button>
+                <mat-icon class="md-18 md-light">close</mat-icon>
+              </button>
             </mat-list-item>
           </mat-list>
         </mat-card-content>

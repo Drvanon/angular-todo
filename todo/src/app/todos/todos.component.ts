@@ -25,7 +25,7 @@ export class TodosComponent implements OnInit {
   }
 
   removeTodoList(todolist: TodoList): void {
-    this.todolists = this.todolists.filter(t => t != todolist);
+    this.todolists = this.todolists.filter(tl => tl != todolist);
     this.todosService.removeTodoList(todolist);
   }
 
@@ -35,5 +35,10 @@ export class TodosComponent implements OnInit {
     // this.todosService.getTodoLists()
     //   .subscribe(todolists => this.todolists = todolists);
     this.todolists.push({ title: this.newTodoListTitle, todos: [] } as TodoList);
+  }
+
+  removeTodo(todolist: TodoList, todo: Todo): void {
+      todolist.todos = todolist.todos.filter(t => t != todo);
+      this.todosService.saveTodoLists();
   }
 }

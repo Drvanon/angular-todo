@@ -21,4 +21,8 @@ export class TodosService {
   addTodoList(title: string): void {
     // TODO: post to server
   }
+
+  saveTodoLists(): void {
+    // TODO: send all posts to server
+  }
 }
