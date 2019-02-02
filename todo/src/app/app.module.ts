@@ -1,8 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule, MatCardModule, MatDividerModule, MatGridListModule, MatListModule, MatIconModule, MatButtonModule, MatInputModule } from '@angular/material';
+import { MatToolbarModule, MatCardModule, MatDividerModule,
+  MatGridListModule, MatListModule, MatIconModule,
+  MatButtonModule, MatInputModule, MatCheckboxModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -20,6 +22,7 @@ import { TodosComponent } from './todos/todos.component';
     BrowserAnimationsModule,
     FlexLayoutModule,
     FormsModule,
+    ReactiveFormsModule,
     MatToolbarModule,
     MatCardModule,
     MatDividerModule,
@@ -27,7 +30,8 @@ import { TodosComponent } from './todos/todos.component';
     MatListModule,
     MatIconModule,
     MatButtonModule,
-    MatInputModule
+    MatInputModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]

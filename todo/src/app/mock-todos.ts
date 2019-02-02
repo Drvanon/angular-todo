@@ -4,6 +4,7 @@ export const TODOLISTS: TodoList[] = [
     {
         id: 1,
         title: 'groceries',
+        newTodo: "",
         todos: [
             {
                 id: 1,
@@ -35,6 +36,7 @@ export const TODOLISTS: TodoList[] = [
     {
         id: 2,
         title: 'tasks',
+        newTodo: "",
         todos: [
             {
                 id: 6,

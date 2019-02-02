@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 
 import { Todo, TodoList } from '../todo';
 import { TODOLISTS } from '../mock-todos';
@@ -11,7 +12,9 @@ import { TodosService } from '../todos.service';
 })
 export class TodosComponent implements OnInit {
   todolists: TodoList[];
-  newTodoListTitle: string;
+  todolistForm = new FormGroup({
+    newTitle: new FormControl('')
+  });
 
   constructor(private todosService: TodosService) { }
 
@@ -29,16 +32,22 @@ export class TodosComponent implements OnInit {
     this.todosService.removeTodoList(todolist);
   }
 
-  addTodoList(): void {
-    this.todosService.addTodoList(this.newTodoListTitle);
+  addTodoListSubmit(): void {
+    this.todosService.addTodoList(this.todolistForm.value.newTitle);
     // TODO: replace this when we have a server up
     // this.todosService.getTodoLists()
     //   .subscribe(todolists => this.todolists = todolists);
-    this.todolists.push({ title: this.newTodoListTitle, todos: [] } as TodoList);
+    this.todolists.push({ title: this.todolistForm.value.newTitle, todos: [] } as TodoList);
   }
 
-  removeTodo(todolist: TodoList, todo: Todo): void {
-      todolist.todos = todolist.todos.filter(t => t != todo);
-      this.todosService.saveTodoLists();
+ removeTodo(todolist: TodoList, todo: Todo): void {
+    todolist.todos = todolist.todos.filter(t => t != todo);
+    this.todosService.removeTodoList(todolist);
+  }
+
+  addTodo(todolist: TodoList): void {
+    todolist.todos.push({id: 0, text: todolist.newTodo, finished: false});
+    this.todosService.saveTodoList(todolist);
+    todolist.newTodo = '';
   }
 }

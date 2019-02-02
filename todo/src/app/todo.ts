@@ -1,11 +1,12 @@
 export class Todo {
-    id: number;
-    text: string;
-    finished: boolean;
+  id: number;
+  text: string;
+  finished: boolean;
 }
 
 export class TodoList {
-    id: number;
-    title: string;
-    todos: Array<Todo>;
+  id: number;
+  title: string;
+  todos: Array<Todo>;
+  newTodo: string;
 }

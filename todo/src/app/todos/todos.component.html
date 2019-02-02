@@ -1,33 +1,40 @@
-<div class="row">
-  <mat-form-field appearance="standard">
-    <input [(ngModel)]="newTodoListTitle" placeholder="Title" matInput/>
-    <button (click)="addTodoList('test')" mat-icon-button matSuffix>
-      <mat-icon>add</mat-icon>
-    </button>
-  </mat-form-field>
+<div class="tools">
+  <form [formGroup]="todolistForm">
+    <mat-form-field appearance="standard">
+      <input formControlName="newTitle" placeholder="Title" matInput/>
+      <button (click)="addTodoListSubmit()" type="submit" (ngSubmit)="onSubmit()" mat-icon-button matSuffix>
+        <mat-icon>add</mat-icon>
+      </button>
+    </mat-form-field>
+  </form>
 </div>
-<div class="todos">
-  <mat-grid-list gutterSize="3em" cols="3">
-    <mat-grid-tile  *ngFor="let todolist of todolists">
-      <mat-card class="todolist">
-        <mat-card-header color="accent" fxLayout="row" fxLayoutAlign="space-between">
-          <mat-card-title>{{ todolist.title }}</mat-card-title>
-          <button (click)="removeTodoList(todolist)" mat-icon-button>
-            <mat-icon>close</mat-icon>
+<div class="todos" fxLayout="wrap">
+  <mat-card class="todolist" *ngFor="let todolist of todolists">
+    <mat-card-header color="accent" fxLayout="row" fxLayoutAlign="space-between">
+      <mat-card-title>{{ todolist.title }}</mat-card-title>
+      <button (click)="removeTodoList(todolist)" mat-icon-button>
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item class="todo-item" *ngFor="let todo of todolist.todos" fxLayout="row" fxLayoutAlign="space-between">
+          <mat-checkbox class="finished" [(ngModel)]="todo.finished"></mat-checkbox>
+          <input class="todo" [(ngModel)]="todo.text" matInput/>
+          <button class="remove-todo" (click)="removeTodo(todolist, todo)" mat-icon-button>
+            <mat-icon class="md-18 md-light">close</mat-icon>
           </button>
-        </mat-card-header>
-        <mat-divider></mat-divider>
-        <mat-card-content>
-          <mat-list>
-            <mat-list-item *ngFor="let todo of todolist.todos" fxLayout="row" fxLayoutAlign="space-between">
-              <input class="todo" [(ngModel)]="todo.text"/>
-              <button (click)="removeTodo(todolist, todo)" mat-icon-button>
-                <mat-icon class="md-18 md-light">close</mat-icon>
-              </button>
-            </mat-list-item>
-          </mat-list>
-        </mat-card-content>
-      </mat-card>
-    </mat-grid-tile>
-  </mat-grid-list>
+        </mat-list-item>
+      </mat-list>
+      <mat-card-actions>
+        <mat-form-field apjearance="standard">
+          <input [(ngModel)]="todolist.newTodo" placeholder="New todo" matInput/>
+          <button (click)="addTodo(todolist)" mat-icon-button matSuffix>
+            <mat-icon>add</mat-icon>
+          </button>
+        </mat-form-field>
+      </mat-card-actions>
+    </mat-card-content>
+  </mat-card>
 </div>
