@@ -2,15 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 
 import { Todo, TodoList } from '../todo';
-import { TODOLISTS } from '../mock-todos';
 import { TodosService } from '../todos.service';
 
 @Component({
-  selector: 'app-todos',
-  templateUrl: './todos.component.html',
-  styleUrls: ['./todos.component.sass']
+  selector: 'app-todo',
+  templateUrl: './todo.component.html',
+  styleUrls: ['./todo.component.sass']
 })
-export class TodosComponent implements OnInit {
+export class TodoComponent implements OnInit {
   todolists: TodoList[];
   todolistForm = new FormGroup({
     newTitle: new FormControl('')

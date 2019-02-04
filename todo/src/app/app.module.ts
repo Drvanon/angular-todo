@@ -1,37 +1,21 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule, MatCardModule, MatDividerModule,
-  MatGridListModule, MatListModule, MatIconModule,
-  MatButtonModule, MatInputModule, MatCheckboxModule } from '@angular/material';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { BrowserModule } from '@angular/platform-browser';
+import { MatToolbarModule } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { TodosComponent } from './todos/todos.component';
+
+import { TodoModule } from './todo/todo.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    TodosComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    FlexLayoutModule,
-    FormsModule,
-    ReactiveFormsModule,
+    TodoModule,
     MatToolbarModule,
-    MatCardModule,
-    MatDividerModule,
-    MatGridListModule,
-    MatListModule,
-    MatIconModule,
-    MatButtonModule,
-    MatInputModule,
-    MatCheckboxModule
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

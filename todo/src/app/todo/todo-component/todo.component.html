@@ -20,7 +20,7 @@
     <mat-card-content>
       <mat-list>
         <mat-list-item class="todo-item" *ngFor="let todo of todolist.todos" fxLayout="row" fxLayoutAlign="space-between">
-          <mat-checkbox class="finished" [(ngModel)]="todo.finished"></mat-checkbox>
+          <!-- <mat-checkbox class="finished" [(ngModel)]="todo.finished"></mat-checkbox> -->
           <input class="todo" [(ngModel)]="todo.text" matInput/>
           <button class="remove-todo" (click)="removeTodo(todolist, todo)" mat-icon-button>
             <mat-icon class="md-18 md-light">close</mat-icon>
