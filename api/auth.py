@@ -3,10 +3,11 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm.exc import MultipleResultsFound
 
 from api.database import get_db, User
 
-bp = Blueprint('test', __name__)
+bp = Blueprint('auth', __name__)
 
 @bp.route('/test')
 def test():
@@ -22,8 +23,8 @@ def test():
 
 @bp.route('/register', methods=['POST'])
 def register():
-    username = request.form['username']
-    password = request.form['password']
+    username = request.form.get('username')
+    password = request.form.get('password')
     db = get_db()
     error = None
 
@@ -39,6 +40,42 @@ def register():
         error = 'Username is not unique'
 
     if not error:
-        redirect('auth.login')
+        return jsonify({'message': 'success'})
     else:
-        jsonify({'error': error})
+        return jsonify({'error': error})
+
+@bp.route('/login', methods=['POST'])
+def login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    db = get_db()
+
+    try:
+        user = User.query.filter_by(username=username).one_or_none()
+    except MultipleResultsFound:
+        return jsonify({'error': 'Multiple users for that username found'})
+
+    if not user:
+        return jsonify({'error': 'Username not found'})
+
+    if check_password_hash(user.password, password):
+        session.clear()
+        session['user_id'] = user.id
+        return jsonify({'message': 'success'})
+
+    return jsonify({'error': 'Wrong password'})
+
+@bp.before_app_request
+def load_logged_in_user():
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = User.query.filter_by(id=user_id).one_or_none()
+
+@bp.route('/logout', methods=["POST"])
+def logout():
+    session.clear()
+    return jsonify({'message':'success'})
+
