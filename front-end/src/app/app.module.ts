@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { MatToolbarModule } from '@angular/material';
+
+import { MatToolbarModule, MatButtonModule } from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { TodoModule } from './todo/todo.module';
+import { AuthModule } from './auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +18,10 @@ import { TodoModule } from './todo/todo.module';
     BrowserModule,
     TodoModule,
     MatToolbarModule,
-    AppRoutingModule
+    MatButtonModule,
+    AppRoutingModule,
+    FlexLayoutModule,
+    AuthModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,12 @@
+<mat-toolbar color="primary">
+  <div class="nav-container" fxLayout="row" fxLayoutAlign="space-between">
+    <span fxLayout="column" fxLayoutAlign="center">
+      <a class="brand" routerLink="/">{{brand}}</a>
+    </span>
+    <div class="nav-login">
+      <button routerLink="/login" mat-raised-button><span>Login</span></button>
+      <button routerLink="/register" mat-raised-button color="accent"><span>Register</span></button>
+    </div>
+  </div>
+</mat-toolbar>
+<router-outlet></router-outlet>

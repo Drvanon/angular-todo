@@ -1,0 +1,13 @@
+<form fxLayout="column" fxLayoutAlign="space-between">
+  <mat-form-field>
+    <input matInput placeholder="username" [(ngModel)]="username"/>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Enter your password"
+     [(ngModel)]="password" [type]="hide ? 'password' : 'text'" />
+    <mat-icon matSuffix (click)="hide = !hide">
+      {{hide ? 'visibility_off' : 'visibility'}}
+    </mat-icon>
+  </mat-form-field>
+  <button type="submit" (click)="onSubmit()" mat-raised-button>Submit</button>
+</form>
