@@ -35,14 +35,18 @@ export class AuthService {
     });
   }
 
-  restoreSession() {
-    if ('session' in document.cookie.split(' ').map(cookie => cookie.split('=')[0])) {
-      this.http.get<SessionRestore>(this.settings.api_url + '/restore-session')
+  postRegister (username:string, password: string): Observable<Message> {
+    let options = { withCredentials: true };
+    return this.http.post<Message>(this.settings.api_url + '/register', {username, password}, options);
+  }
+
+  register (username:string, password:string) {
+    return new Observable( (observer) => {
+      this.postRegister(username, password)
         .subscribe( (data) => {
-          this.username = data.username;
-          this.loggedIn = this.username ? true : false;
+          observer.next(data.message);
       });
-    }
+    });
   }
 
   postLogin (username:string, password: string): Observable<Message> {
@@ -53,23 +57,21 @@ export class AuthService {
   doLogin (username: string, password: string) {
     return new Observable((observer) => {
       this.postLogin(username, password)
-        .subscribe(
-          (data: Message) => {
-            if (data.message == 'success') {
-              this.loggedIn = true;
-              this.username = username;
-              window.localStorage.setItem('username', username);
-            }
-
-            observer.next(data.message);
-            observer.complete();
-          },
-          httperror => {
-            observer.error(httperror);
+        .subscribe( (data: Message) => {
+          if (data.message == 'success') {
+            this.loggedIn = true;
+            this.username = username;
+            window.localStorage.setItem('username', username);
           }
-        );
-      }
-    );
+
+          observer.next(data.message);
+          observer.complete();
+        },
+        httperror => {
+          observer.error(httperror);
+        }
+      );
+    });
   }
 
   logOut () {

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule }    from '@angular/common/http';
 
 import { MaterialImportsModule } from '../material-imports/material-imports.module';
+import { AppRoutingModule } from './../app-routing.module';
 
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
@@ -17,7 +18,8 @@ import { RegisterComponent } from './register/register.component';
     CommonModule,
     FormsModule,
     HttpClientModule,
-    MaterialImportsModule
+    MaterialImportsModule,
+    AppRoutingModule
   ],
   exports: [
     LoginComponent,

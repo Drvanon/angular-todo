@@ -9,18 +9,6 @@ from api.database import get_db, User
 
 bp = Blueprint('auth', __name__)
 
-@bp.route('/test')
-def test():
-    db = get_db()
-    jeff = User('jeff', 'sessions')
-    db.session.add(jeff)
-    try:
-        db.session.commit()
-    except IntegrityError:
-        return jsonify({'message': 'username not unique'})
-    return ''
-
-
 @bp.route('/register', methods=['POST'])
 def register():
     username = request.json.get('username')
@@ -43,6 +31,12 @@ def register():
         return jsonify({'message': 'success'})
     else:
         return jsonify({'message': error})
+
+@bp.route('/username-available/<username>')
+def username_available(username):
+    if User.query.filter_by(username=username).one_or_none():
+        return jsonify({'message': 'username taken'})
+    return jsonify({'message': 'username available'})
 
 @bp.route('/login', methods=['POST'])
 def login():

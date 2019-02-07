@@ -20,7 +20,6 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit () {
-    // Assumes HTTPS connection for security
     this.authservice.doLogin(this.username, this.password)
       .subscribe( (data:string) => {
         this.message = data;
