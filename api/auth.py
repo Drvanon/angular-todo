@@ -50,6 +50,11 @@ def login():
     password = request.json.get('password')
     db = get_db()
 
+    if not password:
+        return jsonify({'message': 'A password is required'})
+    if not username:
+        return jsonify({'message': 'A username is required'})
+
     try:
         user = User.query.filter_by(username=username).one_or_none()
     except MultipleResultsFound:
@@ -64,6 +69,15 @@ def login():
         return jsonify({'message': 'success'})
 
     return jsonify({'message': 'Wrong password'})
+
+@bp.route('/is-logged-in/<username>')
+def isLoggedIn(username):
+    print(g.user)
+    print(session.get('user_id'))
+    if g.user:
+        if username == g.user.username:
+            return jsonify({'message': 'user is logged in'})
+    return jsonify({'message': 'user is not logged'})
 
 @bp.before_app_request
 def load_logged_in_user():

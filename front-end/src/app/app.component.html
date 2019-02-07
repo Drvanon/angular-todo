@@ -4,8 +4,14 @@
       <a class="brand" routerLink="/">{{brand}}</a>
     </span>
     <div class="nav-login">
-      <button routerLink="/login" mat-raised-button><span>Login</span></button>
-      <button routerLink="/register" mat-raised-button color="accent"><span>Register</span></button>
+      <div *ngIf="!this.authservice.loggedIn else helloUsername">
+        <button routerLink="/login" mat-raised-button><span>Login</span></button>
+        <button routerLink="/register" mat-raised-button color="accent"><span>Register</span></button>
+      </div>
+      <ng-template #helloUsername>
+        <span class="greeting">Hello {{ this.authservice.username }}</span>
+        <button (click)="logOut()" mat-raised-button>Log out</button>
+      </ng-template>
     </div>
   </div>
 </mat-toolbar>

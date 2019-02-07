@@ -8,26 +8,74 @@ export interface Message {
   message: string;
 }
 
+export interface SessionRestore {
+  username: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  message: string;
+  loggedIn: boolean = false;
+  username: string;
 
-  constructor(private http: HttpClient, private settings: SettingsService) {}
+  constructor(private http: HttpClient, private settings: SettingsService) { }
 
-  isLoggedIn() {
+  isLoggedIn (username:string) {
+    return new Observable( (observer) => {
+      this.http.get<Message>(this.settings.api_url + '/is-logged-in/' + username, {withCredentials: true})
+      .subscribe( (data) => {
+        if (data.message == 'user is logged in') {
+          this.loggedIn = true;
+          this.username = username;
+        } else {
+          this.loggedIn = false;
+        }
+      });
+    });
   }
 
-  getLogin (username:string, password: string): Observable<Message> {
-    return this.http.post<Message>(this.settings.api_url + '/login', {username, password});
+  restoreSession() {
+    if ('session' in document.cookie.split(' ').map(cookie => cookie.split('=')[0])) {
+      this.http.get<SessionRestore>(this.settings.api_url + '/restore-session')
+        .subscribe( (data) => {
+          this.username = data.username;
+          this.loggedIn = this.username ? true : false;
+      });
+    }
+  }
+
+  postLogin (username:string, password: string): Observable<Message> {
+    let options = { withCredentials: true };
+    return this.http.post<Message>(this.settings.api_url + '/login', {username, password}, options);
   }
 
   doLogin (username: string, password: string) {
-    this.getLogin(username, password)
-      .subscribe(
-        (data: Message) => {this.message = data.message; console.log(data);},
-        error => {this.message = 'Something went wrong while sending your request.'; console.log(error);}
-      )
+    return new Observable((observer) => {
+      this.postLogin(username, password)
+        .subscribe(
+          (data: Message) => {
+            if (data.message == 'success') {
+              this.loggedIn = true;
+              this.username = username;
+              window.localStorage.setItem('username', username);
+            }
+
+            observer.next(data.message);
+            observer.complete();
+          },
+          httperror => {
+            observer.error(httperror);
+          }
+        );
+      }
+    );
+  }
+
+  logOut () {
+    this.username = '';
+    this.loggedIn = false;
+    let options = { withCredentials: true };
+    this.http.post(this.settings.api_url + '/logout', options).subscribe();
   }
 }

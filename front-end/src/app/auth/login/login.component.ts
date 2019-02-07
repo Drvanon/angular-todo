@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -11,14 +12,21 @@ export class LoginComponent implements OnInit {
   username: string;
   password: string;
   hide: boolean = true;
+  message: string;
 
-  constructor(private authservice: AuthService) { }
+  constructor(private authservice: AuthService, private router: Router) { }
 
   ngOnInit() {
   }
 
   onSubmit () {
     // Assumes HTTPS connection for security
-    this.authservice.doLogin(this.username, this.password);
+    this.authservice.doLogin(this.username, this.password)
+      .subscribe( (data:string) => {
+        this.message = data;
+        if (data == 'success') {
+          this.router.navigate(['/']);
+        }
+      });
   }
 }
