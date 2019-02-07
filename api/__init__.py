@@ -15,7 +15,12 @@ def create_app(test_config=None):
         SQLALCHEMY_TRACK_MODIFICATIONS=False
     )
 
-    CORS(app)
+    '''
+    NOTE: supports_credentials creates a CSRF security risk. This is only
+    for development purposes. Simply setting the domain would greatly
+    decrease the risk, but the best solution would be to host on the same site.
+    '''
+    CORS(app, supports_credentials=True)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
