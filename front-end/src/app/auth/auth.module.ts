@@ -1,6 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule }    from '@angular/common/http';
+
 import { MaterialImportsModule } from '../material-imports/material-imports.module';
+
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 
@@ -11,6 +15,8 @@ import { RegisterComponent } from './register/register.component';
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    HttpClientModule,
     MaterialImportsModule
   ],
   exports: [

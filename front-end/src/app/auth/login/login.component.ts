@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LoginService } from '../auth.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -7,14 +7,18 @@ import { LoginService } from '../auth.service';
   styleUrls: ['./login.component.sass']
 })
 export class LoginComponent implements OnInit {
-  logged_in = false;
+  logged_in: boolean = false;
+  username: string;
+  password: string;
+  hide: boolean = true;
 
-  constructor() { }
+  constructor(private authservice: AuthService) { }
 
   ngOnInit() {
   }
 
   onSubmit () {
-
+    // Assumes HTTPS connection for security
+    this.authservice.doLogin(this.username, this.password);
   }
 }

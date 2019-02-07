@@ -17,14 +17,14 @@ def test():
     try:
         db.session.commit()
     except IntegrityError:
-        return jsonify({'error': 'username not unique'})
+        return jsonify({'message': 'username not unique'})
     return ''
 
 
 @bp.route('/register', methods=['POST'])
 def register():
-    username = request.form.get('username')
-    password = request.form.get('password')
+    username = request.json.get('username')
+    password = request.json.get('password')
     db = get_db()
     error = None
 
@@ -42,28 +42,28 @@ def register():
     if not error:
         return jsonify({'message': 'success'})
     else:
-        return jsonify({'error': error})
+        return jsonify({'message': error})
 
 @bp.route('/login', methods=['POST'])
 def login():
-    username = request.form.get('username')
-    password = request.form.get('password')
+    username = request.json.get('username')
+    password = request.json.get('password')
     db = get_db()
 
     try:
         user = User.query.filter_by(username=username).one_or_none()
     except MultipleResultsFound:
-        return jsonify({'error': 'Multiple users for that username found'})
+        return jsonify({'message': 'Multiple users for that username found'})
 
     if not user:
-        return jsonify({'error': 'Username not found'})
+        return jsonify({'message': 'Username not found'})
 
     if check_password_hash(user.password, password):
         session.clear()
         session['user_id'] = user.id
         return jsonify({'message': 'success'})
 
-    return jsonify({'error': 'Wrong password'})
+    return jsonify({'message': 'Wrong password'})
 
 @bp.before_app_request
 def load_logged_in_user():
