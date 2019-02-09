@@ -1,0 +1,53 @@
+digraph G {
+
+    subgraph cluster_0 {
+        label="API";
+
+        loadb [label="elastic load balancer"];
+        loadb -> python1 [dir="both"];
+        loadb -> python2 [dir="both"];
+        loadb -> python3 [dir="both"];
+
+        subgraph cluster_1 {
+            label="Elastic Compute Cloud 2 (EC2)";
+
+            subgraph cluster_2 {
+                label="Docker"
+                python1 [label="Python/Flask"];
+            }
+
+            subgraph cluster_3 {
+                label="Docker"
+                python2 [label="Python/Flask"];
+            }
+
+            subgraph cluster_4 {
+                label="Docker"
+                python3 [label="Python/Flask"];
+            }
+
+            etc [label="...", shape=rectangle];
+        }
+
+        python1 -> database;
+        python2 -> database;
+        python3 -> database;
+        etc -> database;
+        database [label="DynamoDB", shape=cylinder, style=filled];
+    }
+
+    subgraph cluster_5 {
+        label="AWS S3";
+
+        angular [label="angular app"];
+    }
+
+
+    client;
+    client -> internet [dir="both"];
+    internet -> loadb [dir="both", label="api.domain.com"];
+    internet -> angular [dir="both", label="domain.com"];
+
+    internet [shape=doublecircle];
+
+}
