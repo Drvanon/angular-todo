@@ -6,12 +6,14 @@ from flask_cors import CORS
 
 db = SQLAlchemy()
 
+
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='12398fjnkcm,zxcjnd123n',
-        SQLALCHEMY_DATABASE_URI='sqlite:///{}'.format(os.path.join(app.instance_path, 'api.sqlite')),
+        SQLALCHEMY_DATABASE_URI='sqlite:///{}'.format(
+            os.path.join(app.instance_path, 'api.sqlite')),
         SQLALCHEMY_TRACK_MODIFICATIONS=False
     )
 
@@ -41,5 +43,8 @@ def create_app(test_config=None):
 
     from . import auth
     app.register_blueprint(auth.bp)
+
+    from . import todos
+    app.register_blueprint(todos.bp)
 
     return app

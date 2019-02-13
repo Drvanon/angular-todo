@@ -1,19 +1,25 @@
+from functools import wraps
+
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for, jsonify
+    Blueprint, g, request, session, jsonify, abort
 )
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import check_password_hash
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import MultipleResultsFound
 
-from api.database import get_db, User
+from api.database import User
+from . import db
 
 bp = Blueprint('auth', __name__)
 
+
 @bp.route('/register', methods=['POST'])
 def register():
+    if not request.json:
+        return jsonify({'message': 'no json data received'})
+
     username = request.json.get('username')
     password = request.json.get('password')
-    db = get_db()
     error = None
 
     if not username:
@@ -32,17 +38,21 @@ def register():
     else:
         return jsonify({'message': error})
 
+
 @bp.route('/username-available/<username>')
 def username_available(username):
     if User.query.filter_by(username=username).one_or_none():
         return jsonify({'message': 'username taken'})
     return jsonify({'message': 'username available'})
 
+
 @bp.route('/login', methods=['POST'])
 def login():
+    if not request.json:
+        return jsonify({'message': 'no json data received'})
+
     username = request.json.get('username')
     password = request.json.get('password')
-    db = get_db()
 
     if not password:
         return jsonify({'message': 'A password is required'})
@@ -64,14 +74,14 @@ def login():
 
     return jsonify({'message': 'Wrong password'})
 
+
 @bp.route('/is-logged-in/<username>')
 def isLoggedIn(username):
-    print(g.user)
-    print(session.get('user_id'))
     if g.user:
         if username == g.user.username:
             return jsonify({'message': 'user is logged in'})
     return jsonify({'message': 'user is not logged'})
+
 
 @bp.before_app_request
 def load_logged_in_user():
@@ -80,10 +90,19 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = User.query.filter_by(id=user_id).one_or_none()
+        g.user = db.session.query(User).get(user_id)
+
 
 @bp.route('/logout', methods=["POST"])
 def logout():
     session.clear()
-    return jsonify({'message':'success'})
+    return jsonify({'message': 'success'})
 
+
+def require_authorization(f):
+    @wraps(f)
+    def decorator(*args, **kwargs):
+        if 'user' in g and g.user:
+            return f(*args, **kwargs)
+        abort(401)
+    return decorator
