@@ -27,7 +27,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(20), nullable=False)
-    todolists = db.relation("TodoList", back_populates="user")
+    todolists = db.relation("TodoList", cascade="all,delete", back_populates="user")
 
     def __init__(self, username, password):
         self.username = username
@@ -39,7 +39,7 @@ class TodoList(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80))
-    todos = db.relationship("Todo", back_populates="todolist")
+    todos = db.relationship("Todo", cascade="all,delete", back_populates="todolist")
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship("User", back_populates="todolists")
 
